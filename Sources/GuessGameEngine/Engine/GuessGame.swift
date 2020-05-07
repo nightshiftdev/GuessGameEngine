@@ -1,0 +1,115 @@
+//
+//  GuessGame.swift
+//  GuessGame
+//
+//  Created by Pawel Kijowski on 4/9/20.
+//  Copyright © 2020 Pawel Kijowski. All rights reserved.
+//
+
+import Foundation
+
+enum GameEventType {
+    case undefinedState
+    case waitingToConfigureGame
+    case readyForUserInput
+    case gameOver
+    case playerWon
+}
+
+struct GameEvent {
+    let type:GameEventType
+    let data:[String:Any]
+}
+
+protocol GuessGameDelegate {
+    func handle(event:GameEvent)
+}
+
+internal class GuessGame {
+    var delegate:GuessGameDelegate?
+    var players:[Player]
+    var currentPlayerIdx = 0
+    let synchQ = DispatchQueue(label: "com.guessGame.SyncQ")
+    var nextTurnTimer:Timer
+    var winningGuess:Int
+    init(delegate:GuessGameDelegate) {
+        self.delegate = delegate
+        self.players = []
+        let configEvent = GameEvent(type: .waitingToConfigureGame, data: [:])
+        self.delegate?.handle(event:configEvent)
+        self.nextTurnTimer = Timer()
+        self.winningGuess = Int.max
+    }
+    
+    func playerTurnExpired(timer:Timer) {
+        let player = players[currentPlayerIdx]
+        print("Timer expired for player:\(player.name)")
+        let factory = EngineCommandFactory()
+        let nextPlayerInputCommand = factory.makeCommand(params:["player":player.name,"type":"PlayerInputCommand","value":Int.min])!
+        print("Skipping player move:\(player.name)")
+        enqueue(nextPlayerInputCommand)
+    }
+    
+    func waitForPlayerInput() {
+        DispatchQueue.main.async {
+            self.nextTurnTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: self.playerTurnExpired)
+            RunLoop.current.add(self.nextTurnTimer, forMode: .default)
+        }
+    }
+    
+    func cancelWaitForPlayerInput() {
+        self.nextTurnTimer.invalidate()
+    }
+    
+    func handleConfigureGameCommand(_ inputCommand:ConfigureGameCommand) -> GameEvent {
+        let playersNotUniqueError = GameEvent(type: .waitingToConfigureGame, data: ["error":"Player names are not unique"])
+        if inputCommand.players.count != Set(inputCommand.players).count { self.delegate?.handle(event: playersNotUniqueError) }
+        self.players = inputCommand.players
+        if let winningGuess = inputCommand.winningGuess {
+            self.winningGuess = winningGuess
+        }
+        let player = self.players[self.currentPlayerIdx]
+        waitForPlayerInput()
+        return GameEvent(type: .readyForUserInput, data: ["player":player])
+    }
+    
+    func handlePlayerInputCommand(_ cmd:PlayerInputCommand) -> GameEvent {
+        let player = self.players[self.currentPlayerIdx]
+        if cmd.value == self.winningGuess && cmd.player == player.name {
+            let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
+            return GameEvent(type: .playerWon, data: ["player":updatedPlayer])
+        }
+        print("Handling input for player:\(player.name)")
+        let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
+        self.players[self.currentPlayerIdx] = updatedPlayer
+        if self.currentPlayerIdx < self.players.count-1 {
+            self.currentPlayerIdx += 1
+        } else {
+            self.currentPlayerIdx = 0
+        }
+        let nextPlayer = self.players[self.currentPlayerIdx]
+        if nextPlayer.numOfGuessesLeft > 0 {
+            cancelWaitForPlayerInput()
+            waitForPlayerInput()
+            return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer])
+        }
+        cancelWaitForPlayerInput()
+        return GameEvent(type: .gameOver, data: [:])
+    }
+    
+    func enqueue(_ cmd:Command) {
+        synchQ.async { [weak self] in
+            guard let self = self else { return }
+            var event = GameEvent(type: .undefinedState, data: [:])
+            switch cmd.type {
+            case ConfigureGameCommand.type:
+                event = self.handleConfigureGameCommand(cmd as! ConfigureGameCommand)
+            case PlayerInputCommand.type:
+                event = self.handlePlayerInputCommand(cmd as! PlayerInputCommand)
+            default:
+                print("Unknown command")
+            }
+            self.delegate?.handle(event:event)
+        }
+    }
+}
