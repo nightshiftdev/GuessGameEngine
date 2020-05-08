@@ -85,4 +85,16 @@ final class CoreLogicTests: XCTestCase {
         let r = cl.evaluate(input:7,player:p)
         XCTAssert(r == .lost)
     }
+    
+    static var allTests = [
+        ("testThatCanCreateCoreLogic", testThatCanCreateCoreLogic),
+        ("testIfGameObjectExistsThenCanEvaluateUserInput",testIfGameObjectExistsThenCanEvaluateUserInput),
+        ("testIfGuessIsLessThanTargetAndNumberOfGuessesGreaterThanZeroLogicReturnLess",testIfGuessIsLessThanTargetAndNumberOfGuessesGreaterThanZeroLogicReturnLess),
+        ("testIfGuessIsMoreThanTargetAndNumberOfGuessesGreaterThanZeroLogicReturnMore",testIfGuessIsMoreThanTargetAndNumberOfGuessesGreaterThanZeroLogicReturnMore),
+        ("testIfGuessIsMoreThanUpperBoundLogicReturnsOutOfRange",testIfGuessIsMoreThanUpperBoundLogicReturnsOutOfRange),
+        ("testIfGuessIsEqualToLowerBoundLogicReturnsMore",testIfGuessIsEqualToLowerBoundLogicReturnsMore),
+        ("testIfGuessIsEqualToUpperBoundLogicReturnsLess",testIfGuessIsEqualToUpperBoundLogicReturnsLess),
+        ("testIfNumberOfGuessesZeroThenLogicReturnsLost",testIfNumberOfGuessesZeroThenLogicReturnsLost),
+        ("testIfNumberOfGuessesLessThanZeroThenLogicReturnsLost",testIfNumberOfGuessesLessThanZeroThenLogicReturnsLost)
+    ]
 }
