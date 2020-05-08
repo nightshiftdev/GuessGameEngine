@@ -100,4 +100,11 @@ final class GuessGameTests: XCTestCase {
             XCTAssertNil(error)
         }
     }
+    
+    static var allTests = [
+        ("testWhenGuessGameConfiguredItWaitsForUserInput",testWhenGuessGameConfiguredItWaitsForUserInput),
+        ("testWhenGuessGameStartsItExpectsConfigureCommand",testWhenGuessGameStartsItExpectsConfigureCommand),
+        ("testWhenGuessGameGetsUndefinedCmdItSetsTheGameIntoUndefinedState",testWhenGuessGameGetsUndefinedCmdItSetsTheGameIntoUndefinedState),
+        ("testWhenPlayerNamesNotUniqueGameReturnsConfigureGameEventWithError",testWhenPlayerNamesNotUniqueGameReturnsConfigureGameEventWithError)
+    ]
 }
