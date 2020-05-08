@@ -50,5 +50,12 @@ final class QueueTest: XCTestCase {
             }
         }
     }
-
+    
+    static var allTests = [
+        ("testThatCanCreateQueue",testThatCanCreateQueue),
+        ("testThatJustCreatedQueueIsEmpty",testThatJustCreatedQueueIsEmpty),
+        ("testIfEnqueuedThenNotEmpty",testIfEnqueuedThenNotEmpty),
+        ("testIfEnquedAndDequedThenEmpty",testIfEnquedAndDequedThenEmpty),
+        ("testPerformanceExample",testPerformanceExample)
+    ]
 }
