@@ -59,4 +59,8 @@ final class TestIfUserDoesNotEnterGuessHisTurnIsSkipped: XCTestCase, GuessGameDe
             XCTAssertNil(error)
         }
     }
+    
+    static var allTests = [
+        ("test",test)
+    ]
 }

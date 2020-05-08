@@ -8,7 +8,12 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(EventQueueTests.allTests),
         testCase(GameLoopTests.allTests),
         testCase(GuessGameTests.allTests),
-        testCase(QueueTest.allTests)
+        testCase(QueueTest.allTests),
+        testCase(TestIfPlayerDoesNotEnterGuessThePlayerTurnIsSkipped.allTests),
+        testCase(TestIfPlayerEntersCorrectGuessWinsTheGame.allTests),
+        testCase(TestIfUserDoesNotEnterGuessHisTurnIsSkipped.allTests),
+        testCase(TestUsersHaveLimitedTimeToEnterGuess.allTests),
+        testCase(TestWhenGameConfiguredItCyclesThroughAllUsersAndFinishes.allTests)
     ]
 }
 #endif

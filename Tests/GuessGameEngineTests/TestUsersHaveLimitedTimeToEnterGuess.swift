@@ -54,4 +54,8 @@ final class TestUsersHaveLimitedTimeToEnterGuess: XCTestCase, GuessGameDelegate 
             XCTAssertNil(error)
         }
     }
+    
+    static var allTests = [
+        ("test",test)
+    ]
 }

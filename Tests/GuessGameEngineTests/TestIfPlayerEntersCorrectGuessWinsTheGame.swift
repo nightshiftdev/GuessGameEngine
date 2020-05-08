@@ -60,4 +60,8 @@ final class TestIfPlayerEntersCorrectGuessWinsTheGame: XCTestCase, GuessGameDele
             XCTAssertNil(error)
         }
     }
+    
+    static var allTests = [
+        ("test",test)
+    ]
 }

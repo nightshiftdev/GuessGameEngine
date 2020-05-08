@@ -57,4 +57,8 @@ final class TestWhenGameConfiguredItCyclesThroughAllUsersAndFinishes: XCTestCase
             XCTAssertNil(error)
         }
     }
+    
+    static var allTests = [
+        ("test",test)
+    ]
 }
