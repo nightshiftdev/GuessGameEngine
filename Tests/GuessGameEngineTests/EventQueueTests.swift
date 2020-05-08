@@ -172,4 +172,12 @@ final class EventQueueTests: XCTestCase {
         guard let dc = q.nextCommand() else { XCTFail(); return }
         XCTAssert(c.uuid == dc.uuid)
     }
+    
+    static var allTests = [
+        ("testTwoProducersAndConsumers",testTwoProducersAndConsumers),
+        ("testTwoProducersOneConsumer",testTwoProducersOneConsumer),
+        ("testIfCommandAddedToTheQueueObserverGetsNotified",testIfCommandAddedToTheQueueObserverGetsNotified),
+        ("testIfMultipleCommandsEnquedObserverGetsNotifiedAboutAllOfThem",testIfMultipleCommandsEnquedObserverGetsNotifiedAboutAllOfThem),
+        ("testIfCommandEnqueuedItCanBeDequeued",testIfCommandEnqueuedItCanBeDequeued)
+    ]
 }
