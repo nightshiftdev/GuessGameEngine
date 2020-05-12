@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct EngineCommandFactory : CommandFactory {
+internal struct EngineCommandFactory : CommandFactory {
     func makeCommand(params: [String : Any]) -> Command? {
         guard let type = params["type"] as? String else { return nil }
         switch type {
