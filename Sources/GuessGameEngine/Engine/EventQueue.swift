@@ -8,7 +8,7 @@
 
 import Cocoa
 
-internal protocol EventQueueDelegate {
+public protocol EventQueueDelegate {
     func onCommandEnqueued()
 }
 
