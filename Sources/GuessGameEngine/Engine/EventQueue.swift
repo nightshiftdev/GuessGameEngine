@@ -6,7 +6,7 @@
 //  Copyright © 2020 Pawel Kijowski. All rights reserved.
 //
 
-import Cocoa
+import Foundation
 
 public protocol EventQueueDelegate {
     func onCommandEnqueued()
