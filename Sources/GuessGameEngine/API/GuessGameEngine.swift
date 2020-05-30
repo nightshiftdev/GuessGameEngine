@@ -9,23 +9,18 @@
 import Foundation
 
 public struct GuessGameEngine {
-    private let eventQueue = EventQueue()
+    private var game: GuessGame!
     
-    public var delegate: EventQueueDelegate? {
-        get {
-            return self.eventQueue.delegate
-        }
-        
-        set {
-            self.eventQueue.delegate = newValue
-        }
+    init(delegate: GuessGameDelegate) {
+        game = GuessGame(delegate: delegate)
     }
+    
     func makeCommand(params:[String:Any]) -> Command? {
         let factory = EngineCommandFactory()
         return factory.makeCommand(params: params)
     }
     
     func enqueue(command:Command) {
-        self.eventQueue.enqueue(command:command)
+        game.enqueue(command)
     }
 }

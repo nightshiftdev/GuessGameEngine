@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GameEventType {
+public enum GameEventType {
     case undefinedState
     case waitingToConfigureGame
     case readyForUserInput
@@ -16,12 +16,12 @@ enum GameEventType {
     case playerWon
 }
 
-struct GameEvent {
+public struct GameEvent {
     let type:GameEventType
     let data:[String:Any]
 }
 
-protocol GuessGameDelegate {
+public protocol GuessGameDelegate {
     func handle(event:GameEvent)
 }
 

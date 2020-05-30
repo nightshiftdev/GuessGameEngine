@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol EventQueueDelegate {
+protocol EventQueueDelegate {
     func onCommandEnqueued()
 }
 

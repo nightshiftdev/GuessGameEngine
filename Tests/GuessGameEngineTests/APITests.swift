@@ -18,53 +18,47 @@ final class APITests: XCTestCase {
     }
 
     func testThatCanCreateGuessGameEngineAPI() {
-        let api:GuessGameEngine = GuessGameEngine()
+        let handler = GuessGameDelegateHandler { _ in }
+        let api:GuessGameEngine = GuessGameEngine(delegate: handler)
         XCTAssertNotNil(api)
     }
     
     func testThatAPIAllowsToCreateCommands() {
-        let api = GuessGameEngine()
+        let handler = GuessGameDelegateHandler { _ in }
+        let api = GuessGameEngine(delegate: handler)
         let cmd = api.makeCommand(params:["player":"Pawel","type":"PlayerInputCommand","value":1])
         XCTAssertNotNil(cmd)
     }
     
-    struct EventQueueDelegateHandler: EventQueueDelegate {
-        typealias EventQueueDelegateHandlerCompletionBlock = () -> Void
-        let completionBlock: EventQueueDelegateHandlerCompletionBlock
-        func onCommandEnqueued() {
-            self.completionBlock()
+    struct GuessGameDelegateHandler: GuessGameDelegate {
+        typealias GuessGameDelegateCompletionBlock = (GameEvent) -> Void
+        let completionBlock: GuessGameDelegateCompletionBlock
+        func handle(event: GameEvent) {
+            completionBlock(event)
         }
     }
     
     func testThatCanSetupDelegateOnGuessGameEngine() {
-        let factory = EngineCommandFactory()
+        let ex = expectation(description: #function)
+        let handler = GuessGameDelegateHandler { event in
+            if event.type == .readyForUserInput {
+                ex.fulfill()
+            }
+        }
+        let api = GuessGameEngine(delegate: handler)
         let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        guard let c = factory.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3]) else { XCTFail(); return }
-        var api = GuessGameEngine()
-        let ex = expectation(description: #function)
-        let handler = EventQueueDelegateHandler {
-            ex.fulfill()
-        }
-        api.delegate = handler
+        guard let c = api.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3]) else { XCTFail(); return }
         api.enqueue(command: c)
         waitForExpectations(timeout:1.0) { (error) in
             XCTAssertNil(error)
         }
     }
     
-    func testThatIfDelegateSetOnTheGameEngineItCanBeRetrieved() {
-        var api = GuessGameEngine()
-        let handler = EventQueueDelegateHandler {}
-        api.delegate = handler
-        XCTAssertNotNil(api.delegate)
-    }
-    
     static var allTests = [
         ("testThatCanCreateGuessGameEngineAPI",testThatCanCreateGuessGameEngineAPI),
         ("testThatAPIAllowsToCreateCommands",testThatAPIAllowsToCreateCommands),
         ("testThatCanSetupDelegateOnGuessGameEngine",testThatCanSetupDelegateOnGuessGameEngine),
-        ("testThatIfDelegateSetOnTheGameEngineItCanBeRetrieved",testThatIfDelegateSetOnTheGameEngineItCanBeRetrieved)
     ]
 }
