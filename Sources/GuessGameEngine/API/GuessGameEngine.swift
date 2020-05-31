@@ -11,16 +11,16 @@ import Foundation
 public struct GuessGameEngine {
     private var game: GuessGame!
     
-    init(delegate: GuessGameDelegate) {
+    public init(delegate: GuessGameDelegate) {
         game = GuessGame(delegate: delegate)
     }
     
-    func makeCommand(params:[String:Any]) -> Command? {
+    public func makeCommand(params:[String:Any]) -> Command? {
         let factory = EngineCommandFactory()
         return factory.makeCommand(params: params)
     }
     
-    func enqueue(command:Command) {
+    public func enqueue(command:Command) {
         game.enqueue(command)
     }
 }
