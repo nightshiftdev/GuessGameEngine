@@ -11,6 +11,10 @@ import Foundation
 public struct Player: Hashable {
     public let name: String
     public var numOfGuessesLeft: Int
+    public init(name: String, numOfGuessesLeft: Int) {
+        self.name = name
+        self.numOfGuessesLeft = numOfGuessesLeft
+    }
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.name)
     }
