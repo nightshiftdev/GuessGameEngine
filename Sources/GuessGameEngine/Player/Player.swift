@@ -8,10 +8,10 @@
 
 import Foundation
 
-internal struct Player: Hashable {
+public struct Player: Hashable {
     let name: String
     var numOfGuessesLeft: Int
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(self.name)
     }
 }
