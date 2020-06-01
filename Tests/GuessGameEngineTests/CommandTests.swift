@@ -174,6 +174,15 @@ final class CommandTests: XCTestCase {
         XCTAssertFalse(tc.uuid.uuidString.isEmpty)
     }
     
+    func testIfDelayParameterMissingThenCommandIsNil() {
+        let ecf = EngineCommandFactory()
+        let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
+        let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
+        let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
+        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3])
+        XCTAssertNil(cgc)
+    }
+    
     static var allTests = [
         ("testCreateNilCommand", testCreateNilCommand),
         ("testCreatePlayerInputCommand", testCreatePlayerInputCommand),
