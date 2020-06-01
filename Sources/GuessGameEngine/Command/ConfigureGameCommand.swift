@@ -35,10 +35,12 @@ public struct ConfigureGameCommand: Command {
     let players: [Player]
     let range: ClosedRange<Int>
     let numberOfGuessesPerPlayer: Int
+    let delay: TimeInterval
     public init?(params: [String : Any]) {
         guard let ps = params["players"] as? [Player] else { return nil }
         if ps.count == 0 { return nil }
         guard let r = params["range"] as? ClosedRange<Int> else { return nil }
+        guard let delay = params["delay"] as? TimeInterval else { return nil }
         guard let nog = params["numberOfGuessesPerPlayer"] as? Int else { return nil }
         if nog <= 0 { return nil }
         if let winningGuess = params["winningGuess"] as? Int {
@@ -49,5 +51,6 @@ public struct ConfigureGameCommand: Command {
         self.players = ps
         self.range = r
         self.numberOfGuessesPerPlayer = nog
+        self.delay = delay
      }
 }

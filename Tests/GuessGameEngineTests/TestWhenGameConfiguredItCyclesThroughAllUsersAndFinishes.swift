@@ -51,7 +51,7 @@ final class TestWhenGameConfiguredItCyclesThroughAllUsersAndFinishes: XCTestCase
     func test() {
         self.ex = expectation(description: #function)
         let factory = EngineCommandFactory()
-        guard let startGameCommand = factory.makeCommand(params: ["players":players!,"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":1]) else { XCTFail(); return }
+        guard let startGameCommand = factory.makeCommand(params: ["players":players!,"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":1,"delay":1.0]) else { XCTFail(); return }
         game.enqueue(startGameCommand)
         waitForExpectations(timeout: 1.0) { (error) in
             XCTAssertNil(error)

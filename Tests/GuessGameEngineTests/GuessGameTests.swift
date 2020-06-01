@@ -43,7 +43,7 @@ final class GuessGameTests: XCTestCase {
         let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        guard let startGameCommand = factory.makeCommand(params: ["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3]) else { XCTFail(); return }
+        guard let startGameCommand = factory.makeCommand(params: ["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"delay":1.0]) else { XCTFail(); return }
         game.enqueue(startGameCommand)
         waitForExpectations(timeout: 1.0) { (error) in
             XCTAssertNil(error)
@@ -94,7 +94,7 @@ final class GuessGameTests: XCTestCase {
         let p1 = Player(name: "Zoe", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        guard let startGameCommand = factory.makeCommand(params: ["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3]) else { XCTFail(); return }
+        guard let startGameCommand = factory.makeCommand(params: ["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"delay":1.0]) else { XCTFail(); return }
         game.enqueue(startGameCommand)
         waitForExpectations(timeout: 1.0) { (error) in
             XCTAssertNil(error)

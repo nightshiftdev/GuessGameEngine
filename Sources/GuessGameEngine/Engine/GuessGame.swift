@@ -32,6 +32,7 @@ internal class GuessGame {
     let synchQ = DispatchQueue(label: "com.guessGame.SyncQ")
     var nextTurnTimer:Timer
     var winningGuess:Int
+    var delay:TimeInterval
     init(delegate:GuessGameDelegate) {
         self.delegate = delegate
         self.players = []
@@ -39,6 +40,7 @@ internal class GuessGame {
         self.delegate?.handle(event:configEvent)
         self.nextTurnTimer = Timer()
         self.winningGuess = Int.max
+        self.delay = 0
     }
     
     func playerTurnExpired(timer:Timer) {
@@ -50,9 +52,9 @@ internal class GuessGame {
         enqueue(nextPlayerInputCommand)
     }
     
-    func waitForPlayerInput() {
+    func waitForPlayerInput(delay:TimeInterval) {
         DispatchQueue.main.async {
-            self.nextTurnTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: self.playerTurnExpired)
+            self.nextTurnTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: self.playerTurnExpired)
             RunLoop.current.add(self.nextTurnTimer, forMode: .default)
         }
     }
@@ -69,7 +71,8 @@ internal class GuessGame {
             self.winningGuess = winningGuess
         }
         let player = self.players[self.currentPlayerIdx]
-        waitForPlayerInput()
+        self.delay = inputCommand.delay
+        waitForPlayerInput(delay: self.delay)
         return GameEvent(type: .readyForUserInput, data: ["player":player])
     }
     
@@ -90,7 +93,7 @@ internal class GuessGame {
         let nextPlayer = self.players[self.currentPlayerIdx]
         if nextPlayer.numOfGuessesLeft > 0 {
             cancelWaitForPlayerInput()
-            waitForPlayerInput()
+            waitForPlayerInput(delay: self.delay)
             return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer])
         }
         cancelWaitForPlayerInput()

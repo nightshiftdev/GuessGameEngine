@@ -46,7 +46,7 @@ final class CommandTests: XCTestCase {
         let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3])
+        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"delay":1.0])
         XCTAssertNotNil(cgc)
     }
     
@@ -109,7 +109,7 @@ final class CommandTests: XCTestCase {
         let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"winningGuess":0])
+        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"winningGuess":0,"delay":1.0])
         XCTAssertNotNil(cgc)
     }
     
@@ -118,7 +118,7 @@ final class CommandTests: XCTestCase {
         let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"winningGuess":50])
+        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"winningGuess":50,"delay":1.0])
         XCTAssertNotNil(cgc)
     }
     
@@ -127,7 +127,7 @@ final class CommandTests: XCTestCase {
         let p1 = Player(name: "Pawel", numOfGuessesLeft: 3)
         let p2 = Player(name: "Eva", numOfGuessesLeft: 3)
         let p3 = Player(name: "Zoe", numOfGuessesLeft: 3)
-        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"winningGuess":100])
+        let cgc = ecf.makeCommand(params:["players":[p1,p2,p3],"type":"ConfigureGameCommand","range":(0...100),"numberOfGuessesPerPlayer":3,"winningGuess":100,"delay":1.0])
         XCTAssertNotNil(cgc)
     }
     
