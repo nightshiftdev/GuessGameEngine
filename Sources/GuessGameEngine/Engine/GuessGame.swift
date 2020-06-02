@@ -17,8 +17,8 @@ public enum GameEventType {
 }
 
 public struct GameEvent {
-    let type:GameEventType
-    let data:[String:Any]
+    public let type:GameEventType
+    public let data:[String:Any]
 }
 
 public protocol GuessGameDelegate {
