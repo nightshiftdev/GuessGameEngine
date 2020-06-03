@@ -67,9 +67,7 @@ internal class GuessGame {
         let playersNotUniqueError = GameEvent(type: .waitingToConfigureGame, data: ["error":"Player names are not unique"])
         if inputCommand.players.count != Set(inputCommand.players).count { self.delegate?.handle(event: playersNotUniqueError) }
         self.players = inputCommand.players
-        if let winningGuess = inputCommand.winningGuess {
-            self.winningGuess = winningGuess
-        }
+        self.winningGuess = inputCommand.winningGuess
         let player = self.players[self.currentPlayerIdx]
         self.delay = inputCommand.delay
         waitForPlayerInput(delay: self.delay)

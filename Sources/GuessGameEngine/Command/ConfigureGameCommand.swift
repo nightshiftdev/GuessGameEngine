@@ -31,7 +31,7 @@ public struct ConfigureGameCommand: Command {
         }
     }
     fileprivate let internalUUID: UUID
-    var winningGuess:Int? = nil
+    var winningGuess: Int
     let players: [Player]
     let range: ClosedRange<Int>
     let numberOfGuessesPerPlayer: Int
@@ -43,10 +43,9 @@ public struct ConfigureGameCommand: Command {
         guard let delay = params["delay"] as? TimeInterval else { return nil }
         guard let nog = params["numberOfGuessesPerPlayer"] as? Int else { return nil }
         if nog <= 0 { return nil }
-        if let winningGuess = params["winningGuess"] as? Int {
-            if !r.contains(winningGuess) { return nil }
-            self.winningGuess = winningGuess
-        }
+        guard let winningGuess = params["winningGuess"] as? Int else { return nil }
+        if !r.contains(winningGuess) { return nil }
+        self.winningGuess = winningGuess
         self.internalUUID = UUID()
         self.players = ps
         self.range = r
