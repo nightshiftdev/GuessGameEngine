@@ -77,6 +77,7 @@ internal class GuessGame {
     func handlePlayerInputCommand(_ cmd:PlayerInputCommand) -> GameEvent {
         let player = self.players[self.currentPlayerIdx]
         if cmd.value == self.winningGuess && cmd.player == player.name {
+            cancelWaitForPlayerInput()
             let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
             return GameEvent(type: .playerWon, data: ["player":updatedPlayer])
         }
