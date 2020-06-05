@@ -28,7 +28,7 @@ public protocol GuessGameDelegate {
 internal class GuessGame {
     var delegate:GuessGameDelegate?
     var players:[Player]
-    var currentPlayerIdx = 0
+    var currentPlayerIdx = NSNotFound
     let synchQ = DispatchQueue(label: "com.guessGame.SyncQ")
     var nextTurnTimer:Timer
     var winningGuess:Int
@@ -66,6 +66,7 @@ internal class GuessGame {
     func handleConfigureGameCommand(_ inputCommand:ConfigureGameCommand) -> GameEvent {
         let playersNotUniqueError = GameEvent(type: .waitingToConfigureGame, data: ["error":"Player names are not unique"])
         if inputCommand.players.count != Set(inputCommand.players).count { self.delegate?.handle(event: playersNotUniqueError) }
+        self.currentPlayerIdx = 0
         self.players = inputCommand.players
         self.winningGuess = inputCommand.winningGuess
         let player = self.players[self.currentPlayerIdx]
@@ -75,6 +76,9 @@ internal class GuessGame {
     }
     
     func handlePlayerInputCommand(_ cmd:PlayerInputCommand) -> GameEvent {
+        if self.currentPlayerIdx == NSNotFound || self.players.count <= 0 {
+            return GameEvent(type: .waitingToConfigureGame, data: [:])
+        }
         let player = self.players[self.currentPlayerIdx]
         if cmd.value == self.winningGuess && cmd.player == player.name {
             cancelWaitForPlayerInput()
@@ -99,6 +103,20 @@ internal class GuessGame {
         return GameEvent(type: .gameOver, data: [:])
     }
     
+    func resetEngine() {
+        self.currentPlayerIdx = NSNotFound
+        self.players = []
+        self.nextTurnTimer = Timer()
+        self.winningGuess = Int.max
+        self.delay = 0
+    }
+    
+    func handleResetEngineCommand(_ cmd: ResetEngineCommand) -> GameEvent {
+        cancelWaitForPlayerInput()
+        resetEngine()
+        return GameEvent(type: .waitingToConfigureGame, data: [:])
+    }
+    
     func enqueue(_ cmd:Command) {
         synchQ.async { [weak self] in
             guard let self = self else { return }
@@ -108,6 +126,8 @@ internal class GuessGame {
                 event = self.handleConfigureGameCommand(cmd as! ConfigureGameCommand)
             case PlayerInputCommand.type:
                 event = self.handlePlayerInputCommand(cmd as! PlayerInputCommand)
+            case ResetEngineCommand.type:
+                event = self.handleResetEngineCommand(cmd as! ResetEngineCommand)
             default:
                 print("Unknown command")
             }
