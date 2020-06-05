@@ -17,7 +17,7 @@ public struct ConfigureGameCommand: Command {
     
     public var description: String {
         get {
-            return "\(PlayerInputCommand.type):\(uuid)"
+            return "\(ConfigureGameCommand.type):\(uuid)"
         }
     }
     
