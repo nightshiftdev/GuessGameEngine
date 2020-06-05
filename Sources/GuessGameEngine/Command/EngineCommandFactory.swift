@@ -16,6 +16,8 @@ internal struct EngineCommandFactory : CommandFactory {
             return PlayerInputCommand(params:params)
         case ConfigureGameCommand.type:
             return ConfigureGameCommand(params:params)
+        case ResetEngineCommand.type:
+            return ResetEngineCommand(params:params)
         default:
             return nil
         }

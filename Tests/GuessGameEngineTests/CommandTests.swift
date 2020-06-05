@@ -183,6 +183,12 @@ final class CommandTests: XCTestCase {
         XCTAssertNil(cgc)
     }
     
+    func testCreateResetEngineCommand() {
+        let ecf = EngineCommandFactory()
+        let rec = ecf.makeCommand(params:["type":"ResetEngineCommand","resetEngine":true])
+        XCTAssertNotNil(rec)
+    }
+    
     static var allTests = [
         ("testCreateNilCommand", testCreateNilCommand),
         ("testCreatePlayerInputCommand", testCreatePlayerInputCommand),
@@ -203,6 +209,8 @@ final class CommandTests: XCTestCase {
         ("testIfPlayersArrayEmptyInConfigureGameCommandThenNil",testIfPlayersArrayEmptyInConfigureGameCommandThenNil),
         ("testIfNumberOfGuessesPerPlayerNegativeInConfigureGameCommandThenNil",testIfNumberOfGuessesPerPlayerNegativeInConfigureGameCommandThenNil),
         ("testIfUnknownTypeThenNoCommandCreated",testIfUnknownTypeThenNoCommandCreated),
-        ("testCreateTestCommand",testCreateTestCommand)
+        ("testCreateTestCommand",testCreateTestCommand),
+        ("testIfDelayParameterMissingThenCommandIsNil",testIfDelayParameterMissingThenCommandIsNil),
+        ("testCreateResetEngineCommand",testCreateResetEngineCommand)
     ]
 }
