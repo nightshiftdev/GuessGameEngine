@@ -15,7 +15,8 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(TestUsersHaveLimitedTimeToEnterGuess.allTests),
         testCase(TestWhenGameConfiguredItCyclesThroughAllUsersAndFinishes.allTests),
         testCase(TestWhenPlayerInputCmdIsSentTheEventCarriesAHint.allTests),
-        testCase(TestWhenEngineIsConfiguredItCanBeReset.allTests)
+        testCase(TestWhenEngineIsConfiguredItCanBeReset.allTests),
+        testCase(TestWhenTheGameEventCarriesAHintItShouldAlsoContainLastGuess.allTests)
     ]
 }
 #endif

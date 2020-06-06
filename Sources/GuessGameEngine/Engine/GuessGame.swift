@@ -33,6 +33,7 @@ internal class GuessGame {
     var nextTurnTimer:Timer
     var winningGuess:Int
     var delay:TimeInterval
+    var guesses:[Int]
     init(delegate:GuessGameDelegate) {
         self.delegate = delegate
         self.players = []
@@ -41,6 +42,7 @@ internal class GuessGame {
         self.nextTurnTimer = Timer()
         self.winningGuess = Int.max
         self.delay = 0
+        self.guesses = [Int]()
     }
     
     func playerTurnExpired(timer:Timer) {
@@ -95,11 +97,12 @@ internal class GuessGame {
         } else {
             self.currentPlayerIdx = 0
         }
+        self.guesses.append(cmd.value)
         let nextPlayer = self.players[self.currentPlayerIdx]
         if nextPlayer.numOfGuessesLeft > 0 {
             cancelWaitForPlayerInput()
             waitForPlayerInput(delay: self.delay)
-            return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer,"hint":hint(winningGuess: winningGuess, guess: cmd.value)])
+            return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer,"hint":hint(winningGuess: winningGuess, guess: cmd.value),"lastGuess":self.guesses.last!])
         }
         cancelWaitForPlayerInput()
         return GameEvent(type: .gameOver, data: [:])
@@ -123,6 +126,7 @@ internal class GuessGame {
         self.nextTurnTimer = Timer()
         self.winningGuess = Int.max
         self.delay = 0
+        self.guesses = [Int]()
     }
     
     func handleResetEngineCommand(_ cmd: ResetEngineCommand) -> GameEvent {
