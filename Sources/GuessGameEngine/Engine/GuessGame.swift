@@ -72,7 +72,7 @@ internal class GuessGame {
         let player = self.players[self.currentPlayerIdx]
         self.delay = inputCommand.delay
         waitForPlayerInput(delay: self.delay)
-        return GameEvent(type: .readyForUserInput, data: ["player":player])
+        return GameEvent(type: .readyForUserInput, data: ["player":player,"hint":""])
     }
     
     func handlePlayerInputCommand(_ cmd:PlayerInputCommand) -> GameEvent {
@@ -80,10 +80,12 @@ internal class GuessGame {
             return GameEvent(type: .waitingToConfigureGame, data: [:])
         }
         let player = self.players[self.currentPlayerIdx]
+        print("player:\(player.name) entered:\(cmd.value) winning num:\(self.winningGuess)")
+        print("cmd.player: \(cmd.player), expected player:\(player.name)")
         if cmd.value == self.winningGuess && cmd.player == player.name {
             cancelWaitForPlayerInput()
             let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
-            return GameEvent(type: .playerWon, data: ["player":updatedPlayer])
+            return GameEvent(type: .playerWon, data: ["player":updatedPlayer,"hint":hint(winningGuess: winningGuess, guess: cmd.value)])
         }
         print("Handling input for player:\(player.name)")
         let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
@@ -97,10 +99,22 @@ internal class GuessGame {
         if nextPlayer.numOfGuessesLeft > 0 {
             cancelWaitForPlayerInput()
             waitForPlayerInput(delay: self.delay)
-            return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer])
+            return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer,"hint":hint(winningGuess: winningGuess, guess: cmd.value)])
         }
         cancelWaitForPlayerInput()
         return GameEvent(type: .gameOver, data: [:])
+    }
+    
+    func hint(winningGuess:Int, guess:Int) -> String {
+        if guess == Int.min {
+            return ""
+        } else if guess > winningGuess {
+            return "less"
+        } else if guess < winningGuess {
+            return "more"
+        } else {
+            return "found"
+        }
     }
     
     func resetEngine() {

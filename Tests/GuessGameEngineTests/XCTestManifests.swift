@@ -13,7 +13,9 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(TestIfPlayerEntersCorrectGuessWinsTheGame.allTests),
         testCase(TestIfUserDoesNotEnterGuessHisTurnIsSkipped.allTests),
         testCase(TestUsersHaveLimitedTimeToEnterGuess.allTests),
-        testCase(TestWhenGameConfiguredItCyclesThroughAllUsersAndFinishes.allTests)
+        testCase(TestWhenGameConfiguredItCyclesThroughAllUsersAndFinishes.allTests),
+        testCase(TestWhenPlayerInputCmdIsSentTheEventCarriesAHint.allTests),
+        testCase(TestWhenEngineIsConfiguredItCanBeReset.allTests)
     ]
 }
 #endif
