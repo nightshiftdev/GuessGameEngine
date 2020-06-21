@@ -18,6 +18,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(TestWhenEngineIsConfiguredItCanBeReset.allTests),
         testCase(TestWhenTheGameEventCarriesAHintItShouldAlsoContainLastGuess.allTests),
         testCase(TestWhenPlayerWonEventSentItShouldContainWinningGuess.allTests),
+        testCase(TestWhenGameOverEventSentItShouldContainWinningGuess.allTests),
     ]
 }
 #endif
