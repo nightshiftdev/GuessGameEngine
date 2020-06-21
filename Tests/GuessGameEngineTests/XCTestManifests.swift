@@ -19,6 +19,7 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(TestWhenTheGameEventCarriesAHintItShouldAlsoContainLastGuess.allTests),
         testCase(TestWhenPlayerWonEventSentItShouldContainWinningGuess.allTests),
         testCase(TestWhenGameOverEventSentItShouldContainWinningGuess.allTests),
+        testCase(TestWhenReadyForUserInputEventSentItShouldContainDelay.allTests),
     ]
 }
 #endif

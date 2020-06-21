@@ -75,7 +75,7 @@ internal class GuessGame {
         let player = self.players[self.currentPlayerIdx]
         self.delay = inputCommand.delay
         waitForPlayerInput(delay: self.delay)
-        return GameEvent(type: .readyForUserInput, data: ["player":player,"hint":""])
+        return GameEvent(type: .readyForUserInput, data: ["player":player,"hint":"","delay":self.delay])
     }
     
     func handlePlayerInputCommand(_ cmd:PlayerInputCommand) -> GameEvent {
