@@ -46,6 +46,7 @@ internal class GuessGame {
     }
     
     func playerTurnExpired(timer:Timer) {
+        if currentPlayerIdx < 0 || currentPlayerIdx >= players.count { return }
         let player = players[currentPlayerIdx]
         print("Timer expired for player:\(player.name)")
         let factory = EngineCommandFactory()
@@ -87,7 +88,7 @@ internal class GuessGame {
         if cmd.value == self.winningGuess && cmd.player == player.name {
             cancelWaitForPlayerInput()
             let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
-            return GameEvent(type: .playerWon, data: ["player":updatedPlayer,"hint":hint(winningGuess: winningGuess, guess: cmd.value)])
+            return GameEvent(type: .playerWon, data: ["player":updatedPlayer,"target":self.winningGuess,"hint":hint(winningGuess: winningGuess, guess: cmd.value)])
         }
         print("Handling input for player:\(player.name)")
         let updatedPlayer = Player(name:player.name, numOfGuessesLeft:player.numOfGuessesLeft - 1)
