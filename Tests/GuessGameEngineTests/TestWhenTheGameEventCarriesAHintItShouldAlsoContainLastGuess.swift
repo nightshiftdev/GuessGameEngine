@@ -62,6 +62,7 @@ final class TestWhenTheGameEventCarriesAHintItShouldAlsoContainLastGuess: XCTest
             guard let hint = event.data["hint"] as? String else { XCTFail(); return }
             print("HINT:\(hint)")
             if hints[hintIdx] != hint { XCTFail(); return }
+            self.game.delegate = nil
             ex.fulfill()
         }
     }
