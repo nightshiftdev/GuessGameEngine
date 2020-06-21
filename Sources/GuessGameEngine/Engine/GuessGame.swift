@@ -106,7 +106,7 @@ internal class GuessGame {
             return GameEvent(type: .readyForUserInput, data: ["player":nextPlayer,"hint":hint(winningGuess: winningGuess, guess: cmd.value),"lastGuess":self.guesses.last!])
         }
         cancelWaitForPlayerInput()
-        return GameEvent(type: .gameOver, data: [:])
+        return GameEvent(type: .gameOver, data: ["target":self.winningGuess])
     }
     
     func hint(winningGuess:Int, guess:Int) -> String {
